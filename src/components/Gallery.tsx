@@ -2,26 +2,78 @@ import { useState } from "react";
 import { Dialog, DialogContent } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { ChevronLeft, ChevronRight, X } from "lucide-react";
-import { useQuery } from "@tanstack/react-query";
-import { supabase } from "@/integrations/supabase/client";
+
+// Import gallery images
+import exteriorNight from "@/assets/gallery/exterior-night.jpg";
+import cozySeating from "@/assets/gallery/cozy-seating.jpg";
+import archedViewpoint from "@/assets/gallery/arched-viewpoint.jpg";
+import mainDining from "@/assets/gallery/main-dining.jpg";
+import warmLights from "@/assets/gallery/warm-lights.jpg";
+import nightAmbience from "@/assets/gallery/night-ambience.jpg";
+import fountainLandmark from "@/assets/gallery/fountain-landmark.jpg";
+import daylightRooftop from "@/assets/gallery/daylight-rooftop.jpg";
+import tableSetup from "@/assets/gallery/table-setup.jpg";
+
+const galleryImages = [
+  {
+    id: 1,
+    image_url: exteriorNight,
+    caption: "Sun Roof Café – Exterior Night View",
+    alt_text: "Photo of Sun Roof Café – Exterior Night View – Sun Roof Café",
+  },
+  {
+    id: 2,
+    image_url: cozySeating,
+    caption: "Cozy Seating Area With Warm Lighting",
+    alt_text: "Photo of Cozy Seating Area With Warm Lighting – Sun Roof Café",
+  },
+  {
+    id: 3,
+    image_url: archedViewpoint,
+    caption: "Arched Viewpoint With Plants – Café Interior",
+    alt_text: "Photo of Arched Viewpoint With Plants – Café Interior – Sun Roof Café",
+  },
+  {
+    id: 4,
+    image_url: mainDining,
+    caption: "Main Dining Area – Evening Ambience",
+    alt_text: "Photo of Main Dining Area – Evening Ambience – Sun Roof Café",
+  },
+  {
+    id: 5,
+    image_url: warmLights,
+    caption: "Warm Ambient Lights & Hanging Plants",
+    alt_text: "Photo of Warm Ambient Lights & Hanging Plants – Sun Roof Café",
+  },
+  {
+    id: 6,
+    image_url: nightAmbience,
+    caption: "Night Café Ambience – Wide Angle",
+    alt_text: "Photo of Night Café Ambience – Wide Angle – Sun Roof Café",
+  },
+  {
+    id: 7,
+    image_url: fountainLandmark,
+    caption: "Beautiful Fountain Landmark Near Sun Roof Café",
+    alt_text: "Photo of Beautiful Fountain Landmark Near Sun Roof Café – Sun Roof Café",
+  },
+  {
+    id: 8,
+    image_url: daylightRooftop,
+    caption: "Sun Roof Café – Daylight Rooftop Area",
+    alt_text: "Photo of Sun Roof Café – Daylight Rooftop Area – Sun Roof Café",
+  },
+  {
+    id: 9,
+    image_url: tableSetup,
+    caption: "Table Setup – Sun Roof Café Menu & Decor",
+    alt_text: "Photo of Table Setup – Sun Roof Café Menu & Decor – Sun Roof Café",
+  },
+];
 
 const Gallery = () => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [currentImage, setCurrentImage] = useState(0);
-
-  const { data: galleryImages = [], isLoading } = useQuery({
-    queryKey: ["gallery-images"],
-    queryFn: async () => {
-      const { data, error } = await supabase
-        .from("gallery_images")
-        .select("*")
-        .eq("is_active", true)
-        .order("display_order", { ascending: true });
-
-      if (error) throw error;
-      return data;
-    },
-  });
 
   const openLightbox = (index: number) => {
     setCurrentImage(index);
@@ -41,24 +93,6 @@ const Gallery = () => {
     if (e.key === "ArrowLeft") prevImage();
     if (e.key === "Escape") setLightboxOpen(false);
   };
-
-  if (isLoading) {
-    return (
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-        {[...Array(6)].map((_, i) => (
-          <div key={i} className="aspect-[4/3] bg-muted rounded-2xl animate-pulse" />
-        ))}
-      </div>
-    );
-  }
-
-  if (!galleryImages.length) {
-    return (
-      <div className="text-center py-12">
-        <p className="text-muted-foreground">No gallery images available yet.</p>
-      </div>
-    );
-  }
 
   return (
     <>
