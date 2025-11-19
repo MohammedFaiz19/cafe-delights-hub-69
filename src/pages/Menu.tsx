@@ -19,6 +19,12 @@ import chineseVegStarterCover from "@/assets/menu-covers/chinese-veg-starter-cov
 import chineseNonvegStarterCover from "@/assets/menu-covers/chinese-nonveg-starter-cover.jpg";
 import momosCover from "@/assets/menu-covers/momos-cover.jpg";
 import sharingsCover from "@/assets/menu-covers/sharings-cover.jpg";
+import mainCourseChineseCover from "@/assets/menu-covers/main-course-chinese-cover.jpg";
+import sideDishChineseCover from "@/assets/menu-covers/side-dish-chinese-cover.jpg";
+import pastaCover from "@/assets/menu-covers/pasta-cover.jpg";
+import pizzaCover from "@/assets/menu-covers/pizza-cover.jpg";
+import burgerCover from "@/assets/menu-covers/burger-cover.jpg";
+import sandwichesCover from "@/assets/menu-covers/sandwiches-cover.jpg";
 interface SubCategory {
   id: string;
   name: string;
@@ -76,27 +82,33 @@ const menuHierarchy: MainCategory[] = [{
   subcategories: [{
     id: "main-dish-chinese",
     name: "MAIN COURSE CHINESE",
-    dbName: "MAIN DISH CHINESE"
+    dbName: "MAIN DISH CHINESE",
+    imageUrl: mainCourseChineseCover
   }, {
     id: "side-dish-chinese",
     name: "SIDE DISH CHINESE",
-    dbName: "SIDE DISH — CHINESE"
+    dbName: "SIDE DISH — CHINESE",
+    imageUrl: sideDishChineseCover
   }, {
     id: "pasta",
     name: "PASTA",
-    dbName: "PASTA"
+    dbName: "PASTA",
+    imageUrl: pastaCover
   }, {
     id: "pizza",
     name: "PIZZA",
-    dbName: "PIZZA"
+    dbName: "PIZZA",
+    imageUrl: pizzaCover
   }, {
     id: "burger",
     name: "BURGER",
-    dbName: "BURGER"
+    dbName: "BURGER",
+    imageUrl: burgerCover
   }, {
     id: "sandwiches",
     name: "SANDWICHES",
-    dbName: "SANDWICHES"
+    dbName: "SANDWICHES",
+    imageUrl: sandwichesCover
   }]
 }, {
   id: "healthy-light",
