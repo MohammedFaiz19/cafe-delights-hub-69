@@ -135,8 +135,15 @@ const Menu = () => {
     return normalizedCategory === normalizedSelected;
   }) || [] : [];
   const handleMainCategoryClick = (categoryId: string) => {
+    const category = menuHierarchy.find(cat => cat.id === categoryId);
     setSelectedMainCategory(categoryId);
-    setSelectedSubCategory(null);
+    
+    // Auto-select subcategory if there's only one
+    if (category && category.subcategories.length === 1) {
+      setSelectedSubCategory(category.subcategories[0]);
+    } else {
+      setSelectedSubCategory(null);
+    }
   };
   const handleBackToMainCategories = () => {
     setSelectedMainCategory(null);
