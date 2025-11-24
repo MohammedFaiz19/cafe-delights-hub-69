@@ -28,6 +28,8 @@ import burgerCover from "@/assets/menu-covers/burger-cover.jpg";
 import sandwichesCover from "@/assets/menu-covers/sandwiches-cover.jpg";
 import saladJuicesCover from "@/assets/menu-covers/salad-juices-cover.jpg";
 import juicesCover from "@/assets/menu-covers/juices-cover.jpg";
+import mojitosCover from "@/assets/menu-covers/mojitos-cover.jpg";
+import milkshakesCover from "@/assets/menu-covers/milkshakes-cover.jpg";
 interface SubCategory {
   id: string;
   name: string;
@@ -150,11 +152,13 @@ const menuHierarchy: MainCategory[] = [{
   subcategories: [{
     id: "mojitos",
     name: "MOJITOS",
-    dbName: "MOJITOS"
+    dbName: "MOJITOS",
+    imageUrl: mojitosCover
   }, {
     id: "milkshakes",
     name: "MILKSHAKES",
-    dbName: "MILKSHAKES"
+    dbName: "MILKSHAKES",
+    imageUrl: milkshakesCover
   }]
 }];
 const Menu = () => {
