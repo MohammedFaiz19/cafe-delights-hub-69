@@ -76,50 +76,54 @@ export const SoupAnimation = ({
   
   if (!imageSrc) return null;
 
-  // Animation variants based on style
+  // Animation variants based on style - optimized for performance
   const animationVariants = {
     cartoon: {
       animate: {
-        y: [0, -8, 0],
-        rotate: [0, 2, -2, 0],
+        y: [0, -6, 0], // Reduced from -8
+        rotate: [0, 1, -1, 0], // Reduced from 2, -2
       },
       transition: {
-        duration: 3,
+        duration: 4, // Increased from 3
         repeat: Infinity,
-        ease: "easeInOut" as const,
+        ease: "linear" as const, // More efficient
+        repeatType: "loop" as const,
       }
     },
     realistic: {
       animate: {
-        scale: [1, 1.02, 1],
+        scale: [1, 1.01, 1], // Reduced from 1.02
         opacity: [0.9, 1, 0.9],
       },
       transition: {
-        duration: 4,
+        duration: 5, // Increased from 4
         repeat: Infinity,
-        ease: "easeInOut" as const,
+        ease: "linear" as const,
+        repeatType: "loop" as const,
       }
     },
     minimal: {
       animate: {
-        y: [0, -12, 0],
-        opacity: [0.6, 1, 0.6],
+        y: [0, -10, 0], // Reduced from -12
+        opacity: [0.6, 0.8, 0.6], // Reduced range
       },
       transition: {
-        duration: 2.5,
+        duration: 3, // Increased from 2.5
         repeat: Infinity,
-        ease: "easeInOut" as const,
+        ease: "linear" as const,
+        repeatType: "loop" as const,
       }
     },
     sticker: {
       animate: {
-        y: [0, -6, 0],
-        scale: [1, 1.05, 1],
+        y: [0, -4, 0], // Reduced from -6
+        scale: [1, 1.03, 1], // Reduced from 1.05
       },
       transition: {
-        duration: 2,
+        duration: 2.5, // Increased from 2
         repeat: Infinity,
-        ease: "easeInOut" as const,
+        ease: "linear" as const,
+        repeatType: "loop" as const,
       }
     }
   };
@@ -132,7 +136,7 @@ export const SoupAnimation = ({
       animate={animation.animate}
       transition={animation.transition}
       style={{
-        willChange: "transform",
+        willChange: "transform, opacity",
       }}
     >
       <img 
@@ -140,27 +144,13 @@ export const SoupAnimation = ({
         alt={`${soupName} animation`}
         className="w-full h-full object-contain"
         loading="lazy"
+        decoding="async"
         style={{
-          filter: style === "realistic" ? "drop-shadow(0 4px 12px rgba(0,0,0,0.2))" : "none",
+          filter: style === "realistic" ? "drop-shadow(0 2px 8px rgba(0,0,0,0.15))" : "none",
         }}
       />
       
-      {/* Additional steam effect for realistic style */}
-      {style === "realistic" && (
-        <motion.div
-          className="absolute inset-0 pointer-events-none"
-          animate={{
-            opacity: [0.3, 0.6, 0.3],
-          }}
-          transition={{
-            duration: 3,
-            repeat: Infinity,
-            ease: "easeInOut",
-          }}
-        >
-          <div className="w-full h-full bg-gradient-to-t from-transparent via-white/10 to-transparent" />
-        </motion.div>
-      )}
+      {/* Removed additional steam effect for better performance */}
     </motion.div>
   );
 };

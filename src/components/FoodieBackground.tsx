@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import { motion } from "framer-motion";
 import burgerSticker from "@/assets/food-stickers/burger-sticker.png";
 import pizzaSticker from "@/assets/food-stickers/pizza-sticker.png";
@@ -36,7 +36,7 @@ const intensityConfig = {
   heavy: { count: 25, maxSize: 120, minSize: 60 },
 };
 
-// Generate random positions and animations
+// Generate random positions and animations - memoized for performance
 const generateStickerProps = (index: number, intensity: IntensityLevel) => {
   const config = intensityConfig[intensity];
   const sticker = foodStickers[index % foodStickers.length];
@@ -47,24 +47,28 @@ const generateStickerProps = (index: number, intensity: IntensityLevel) => {
     x: Math.random() * 100,
     y: Math.random() * 100,
     rotation: Math.random() * 360,
-    duration: 15 + Math.random() * 15, // 15-30 seconds
+    duration: 20 + Math.random() * 10, // Slower: 20-30 seconds instead of 15-30
     delay: Math.random() * 5,
-    xOffset: (Math.random() - 0.5) * 30,
-    yOffset: (Math.random() - 0.5) * 30,
-    rotationOffset: (Math.random() - 0.5) * 45,
+    xOffset: (Math.random() - 0.5) * 20, // Reduced from 30
+    yOffset: (Math.random() - 0.5) * 20, // Reduced from 30
+    rotationOffset: (Math.random() - 0.5) * 30, // Reduced from 45
   };
 };
 
 export const FoodieBackground = ({ intensity = "medium" }: FoodieBackgroundProps) => {
   const [stickers, setStickers] = useState<ReturnType<typeof generateStickerProps>[]>([]);
 
-  useEffect(() => {
+  // Memoize stickers generation
+  const memoizedStickers = useMemo(() => {
     const config = intensityConfig[intensity];
-    const newStickers = Array.from({ length: config.count }, (_, i) => 
+    return Array.from({ length: config.count }, (_, i) => 
       generateStickerProps(i, intensity)
     );
-    setStickers(newStickers);
   }, [intensity]);
+
+  useEffect(() => {
+    setStickers(memoizedStickers);
+  }, [memoizedStickers]);
 
   return (
     <div className="fixed inset-0 overflow-hidden pointer-events-none z-0">
@@ -80,12 +84,13 @@ export const FoodieBackground = ({ intensity = "medium" }: FoodieBackgroundProps
             top: `${props.y}%`,
             width: `${props.size}px`,
             height: `${props.size}px`,
+            willChange: "transform", // GPU acceleration hint
           }}
           initial={{
             x: 0,
             y: 0,
             rotate: props.rotation,
-            opacity: 0.6,
+            opacity: 0.5, // Reduced from 0.6
           }}
           animate={{
             x: [0, props.xOffset, -props.xOffset, 0],
@@ -96,20 +101,25 @@ export const FoodieBackground = ({ intensity = "medium" }: FoodieBackgroundProps
               props.rotation - props.rotationOffset,
               props.rotation,
             ],
-            opacity: [0.4, 0.7, 0.5, 0.4],
+            opacity: [0.3, 0.5, 0.4, 0.3], // Reduced opacity range
           }}
           transition={{
             duration: props.duration,
             delay: props.delay,
             repeat: Infinity,
-            ease: "easeInOut",
+            ease: "linear", // More efficient than easeInOut
+            repeatType: "loop",
           }}
         >
           <img
             src={props.sticker.src}
             alt=""
-            className="w-full h-full object-contain drop-shadow-lg"
+            className="w-full h-full object-contain"
             loading="lazy"
+            decoding="async"
+            style={{
+              filter: "drop-shadow(0 2px 8px rgba(0,0,0,0.15))", // Lighter shadow
+            }}
           />
         </motion.div>
       ))}

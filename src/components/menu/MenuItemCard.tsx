@@ -3,6 +3,7 @@ import { Card } from "@/components/ui/card";
 import { ImageWithFallback } from "@/components/ui/image-with-fallback";
 import { getImagePath } from "@/lib/imageUtils";
 import { SoupAnimation, AnimationStyle } from "./SoupAnimation";
+import { memo } from "react";
 
 interface MenuItemCardProps {
   name: string;
@@ -14,7 +15,8 @@ interface MenuItemCardProps {
   category?: string;
   soupAnimationStyle?: AnimationStyle;
 }
-export const MenuItemCard = ({
+
+export const MenuItemCard = memo(({
   name,
   price,
   vegNonVeg,
@@ -32,7 +34,10 @@ export const MenuItemCard = ({
     <motion.div
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
-      transition={{ delay: index * 0.05 }}
+      transition={{ 
+        delay: index * 0.03, // Reduced from 0.05
+        duration: 0.3, // Faster animation
+      }}
     >
       <Card className="group overflow-hidden hover:shadow-2xl transition-all duration-500 border-border/50 bg-card/80 backdrop-blur-md">
         {/* Soup Animation or Image */}
@@ -50,6 +55,8 @@ export const MenuItemCard = ({
               src={getImagePath(imageUrl)} 
               alt={name} 
               className="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110" 
+              loading="lazy"
+              decoding="async"
             />
             <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-transparent to-transparent" />
           </div>
@@ -75,11 +82,8 @@ export const MenuItemCard = ({
           </p>
         </div>
 
-        {/* Hover shine effect */}
-        <div className="absolute inset-0 opacity-0 group-hover:opacity-100 transition-opacity duration-700 pointer-events-none">
-          <div className="absolute inset-0 bg-gradient-to-r from-transparent via-primary/5 to-transparent -skew-x-12 animate-shine" />
-        </div>
+        {/* Hover shine effect - removed to improve performance */}
       </Card>
     </motion.div>
   );
-};
+});
