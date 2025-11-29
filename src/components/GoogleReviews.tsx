@@ -19,7 +19,7 @@ const reviews: Review[] = [{
   rating: 5,
   time: "4 months ago",
   headline: "A Must-Visit Gem!",
-  text: "Visited Sunroof Café & Restaurant today and I'm truly impressed! The ambience is magical with romantic lighting and soothing music. Tried three types of momos (Schezwuan, BBQ, and Pan Fried) – each one a flavor bomb. The white sauce pasta was top-notch, creamy and authentic. Also had \"Drums of Heaven\" – juicy, perfectly spiced, and unforgettable. This place nails both vibe and taste. Highly recommended!",
+  text: "Amazing ambience with romantic lighting and soothing music. Tried Schezwuan, BBQ, and Pan Fried momos – all incredible! The white sauce pasta was creamy and authentic. Drums of Heaven was perfectly spiced. This place nails both vibe and taste!",
   ratings: {
     food: 5,
     service: 5,
@@ -30,7 +30,7 @@ const reviews: Review[] = [{
   name: "Shaikh Hafizur Rahman",
   rating: 5,
   time: "1 month ago",
-  text: "Food tastes authentic. One of the best Chinese food I've tasted in Mysore. Price is also reasonable. It's a hidden gem in Rajiv Nagar. Definitely visiting again.",
+  text: "Authentic Chinese food, one of the best in Mysore. Great prices too. A hidden gem in Rajiv Nagar. Definitely visiting again!",
   ratings: {
     food: 5,
     service: 4,
@@ -41,7 +41,7 @@ const reviews: Review[] = [{
   name: "Saran Raj",
   rating: 5,
   time: "1 month ago",
-  text: "Friendly staff, the food was nice & lovely ambience. Drums of Heaven, creamy Alfredo pasta, momos, momo soup — must try. Best place to hang out with friends and family.",
+  text: "Friendly staff and lovely ambience. Drums of Heaven, creamy Alfredo pasta, momos, and momo soup are must-try dishes. Perfect spot for friends and family!",
   ratings: {
     food: 5,
     service: 5,
@@ -55,8 +55,8 @@ const RatingBar = ({
   label: string;
   value: number;
 }) => <div className="flex items-center gap-2 text-sm">
-    <span className="text-gray-400 w-24">{label}</span>
-    <div className="flex-1 max-w-[120px] h-2 bg-gray-700 rounded-full overflow-hidden">
+    <span className="text-gray-600 w-24">{label}</span>
+    <div className="flex-1 max-w-[120px] h-2 bg-gray-200 rounded-full overflow-hidden">
       <div className="h-full bg-yellow-500 rounded-full" style={{
       width: `${value / 5 * 100}%`
     }} />
@@ -81,31 +81,38 @@ const GoogleReviews = () => {
 
       {/* Reviews Grid */}
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
-        {reviews.map((review, index) => <div key={index} className="bg-[#1e1e1e] rounded-2xl p-6 text-white shadow-xl border border-gray-800">
+        {reviews.map((review, index) => <div key={index} className="bg-white rounded-2xl p-6 shadow-xl border border-gray-200">
             {/* Profile Header */}
             <div className="flex items-start gap-3 mb-4">
               <div className="w-10 h-10 rounded-full bg-gradient-to-br from-primary to-accent flex items-center justify-center text-white font-bold text-sm flex-shrink-0">
                 {getInitials(review.name)}
               </div>
               <div className="flex-1 min-w-0">
-                <h3 className="font-semibold text-base truncate">{review.name}</h3>
+                <a 
+                  href={googleReviewsUrl}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="font-semibold text-base truncate text-gray-900 hover:text-primary transition-colors"
+                >
+                  {review.name}
+                </a>
                 <div className="flex items-center gap-1 mt-1">
-                  {[...Array(5)].map((_, i) => <Star key={i} className={`w-4 h-4 ${i < review.rating ? 'fill-yellow-500 text-yellow-500' : 'fill-gray-600 text-gray-600'}`} />)}
+                  {[...Array(5)].map((_, i) => <Star key={i} className={`w-4 h-4 ${i < review.rating ? 'fill-yellow-500 text-yellow-500' : 'fill-gray-300 text-gray-300'}`} />)}
                 </div>
-                <p className="text-xs text-gray-400 mt-1">{review.time}</p>
+                <p className="text-xs text-gray-500 mt-1">{review.time}</p>
               </div>
             </div>
 
             {/* Headline */}
-            {review.headline && <h4 className="font-bold text-base mb-2">{review.headline}</h4>}
+            {review.headline && <h4 className="font-bold text-base mb-2 text-gray-900">{review.headline}</h4>}
 
             {/* Review Text */}
-            <p className="text-sm text-gray-300 leading-relaxed mb-4">
+            <p className="text-sm text-gray-700 leading-relaxed mb-4">
               {review.text}
             </p>
 
             {/* Rating Bars */}
-            {review.ratings && <div className="space-y-2 mb-4 py-3 border-t border-gray-700">
+            {review.ratings && <div className="space-y-2 mb-4 py-3 border-t border-gray-200">
                 <RatingBar label="Food" value={review.ratings.food} />
                 <RatingBar label="Service" value={review.ratings.service} />
                 <RatingBar label="Atmosphere" value={review.ratings.atmosphere} />
@@ -113,23 +120,23 @@ const GoogleReviews = () => {
 
             {/* Extra Info */}
             {review.extraInfo && <div className="flex flex-wrap gap-2 mb-4">
-                {review.extraInfo.map((info, i) => <span key={i} className="text-xs bg-gray-800 px-3 py-1 rounded-full text-gray-300">
+                {review.extraInfo.map((info, i) => <span key={i} className="text-xs bg-gray-100 px-3 py-1 rounded-full text-gray-700">
                     {info}
                   </span>)}
               </div>}
 
             {/* Photos Placeholder */}
             {review.photos && <div className="grid grid-cols-3 gap-2 mb-4">
-                {review.photos.map((_, i) => {})}
+                {review.photos.map((_, i) => <div key={i} className="aspect-video bg-gray-200 rounded-lg" />)}
               </div>}
 
             {/* Actions */}
-            <div className="flex items-center gap-4 pt-3 border-t border-gray-800">
-              <button className="flex items-center gap-1 text-gray-400 hover:text-white transition-colors">
+            <div className="flex items-center gap-4 pt-3 border-t border-gray-200">
+              <button className="flex items-center gap-1 text-gray-600 hover:text-primary transition-colors">
                 <Heart className="w-4 h-4" />
                 <span className="text-xs">Helpful</span>
               </button>
-              <button className="flex items-center gap-1 text-gray-400 hover:text-white transition-colors">
+              <button className="flex items-center gap-1 text-gray-600 hover:text-primary transition-colors">
                 <Share2 className="w-4 h-4" />
                 <span className="text-xs">Share</span>
               </button>
